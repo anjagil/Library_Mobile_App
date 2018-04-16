@@ -20,28 +20,12 @@ import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private ListView listView1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Row_Adapter data[] = new Row_Adapter[] {
 
-                new Row_Adapter(R.drawable.ic_menu_send, "Zbrodnia i Kara"),
-                new Row_Adapter(R.drawable.ic_menu_send, "Pan Tadeusz"),
-                new Row_Adapter(R.drawable.ic_menu_send, "Duma i Uprzedzenie"),
-                new Row_Adapter(R.drawable.ic_menu_send, "Matematyka cz2"),
-                new Row_Adapter(R.drawable.ic_menu_send, "Zawód Programista"),
-                new Row_Adapter(R.drawable.ic_menu_send, "Baśnie"),
-                new Row_Adapter(R.drawable.ic_menu_send, "Wiersze"),
-
-        };
-        ListAdapter adapter = new ListAdapter(this,
-                R.layout.custom_row, data);
-
-       // listView1 = (ListView)findViewById(R.id.list);
-
-       // listView1.setAdapter(adapter);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -105,6 +89,7 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         Class fragment_class = null;
         if (id == R.id.nav_camera) {
+            fragment_class = List_Fragment.class;
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -114,6 +99,7 @@ public class MainActivity extends AppCompatActivity
             fragment_class = Sort_Fragment.class;
 
         } else if (id == R.id.nav_share) {
+            fragment_class = Add_Book_Fragment.class;
 
         } else if (id == R.id.nav_send) {
 

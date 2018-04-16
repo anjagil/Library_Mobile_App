@@ -4,14 +4,16 @@ public class Row_Adapter {
 
     public int icon;
     public String title;
+    public String author;
+    public String genre;
 
-    public Row_Adapter(){
 
-    }
 
-    public Row_Adapter(int icon, String title) {
 
-        this.icon = icon;
-        this.title = title;
+    public Row_Adapter(int ic_menu_send, String zbrodnia_i_kara, String s, String dramat) {
+        this.icon = ic_menu_send;
+        this.title = zbrodnia_i_kara;
+        this.author = s;
+        this.genre = dramat;
     }
 }

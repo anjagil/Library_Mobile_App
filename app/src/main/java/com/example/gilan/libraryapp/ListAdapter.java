@@ -2,57 +2,85 @@ package com.example.gilan.libraryapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ListAdapter extends ArrayAdapter<Row_Adapter> {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-    Context context;
-    int layoutResourceId;
-    Row_Adapter data[] = null;
+public class ListAdapter extends BaseAdapter {
+    public static ArrayList<Row_Adapter> data;
+    private LayoutInflater mInflater;
 
-    public ListAdapter(Context context, int layoutResourceId, Row_Adapter[] data) {
-        super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
-        this.context = context;
-        this.data = data;
+    public ListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Row_Adapter> objects) {
+        //super(context, resource, objects);
+        data = objects;
+        mInflater = LayoutInflater.from(context);
+
+    }
+
+
+
+
+
+    @Override
+    public int getCount() {
+        return 0;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        RowBeanHolder holder = null;
 
-        if(row == null)
-        {
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
+        RowBeanHolder holder;
 
+        if(convertView == null){
+
+            //row = inflater.inflate(layoutResourceId, parent, false);
+            convertView = mInflater.inflate(R.layout.custom_row, null);
             holder = new RowBeanHolder();
-            holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
-            holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
+            holder.imgIcon = (ImageView)convertView.findViewById(R.id.imageView2);
+            holder.txtTitle = (TextView)convertView.findViewById(R.id.texttytul);
+            holder.txtAuthor = (TextView)convertView.findViewById(R.id.textautor);
+            holder.txtGenre = (TextView)convertView.findViewById(R.id.textgatunek);
 
-            row.setTag(holder);
+            convertView.setTag(holder);
         }
         else
         {
-            holder = (RowBeanHolder)row.getTag();
+            holder = (RowBeanHolder)convertView.getTag();
         }
 
-        Row_Adapter object = data[position];
+        Row_Adapter object = data.get(position);
         holder.txtTitle.setText(object.title);
         holder.imgIcon.setImageResource(object.icon);
+        holder.txtAuthor.setText(object.author);
+        holder.txtGenre.setText(object.genre);
 
-        return row;
+        return convertView;
     }
 
     static class RowBeanHolder
     {
         ImageView imgIcon;
         TextView txtTitle;
+        TextView txtAuthor;
+        TextView txtGenre;
     }
 }
