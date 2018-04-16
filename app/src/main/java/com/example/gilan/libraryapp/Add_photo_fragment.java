@@ -9,21 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class Add_Author_Fragment extends Fragment {
+public class Add_photo_fragment extends Fragment {
 
-    ViewGroup container1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        container1= container;
-        return inflater.inflate(R.layout.custom_row, container, false);
+
+        return inflater.inflate(R.layout.fragment_add_photo_, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Autor");
+        getActivity().setTitle("Dodaj zdjecie");
 
     }
 }

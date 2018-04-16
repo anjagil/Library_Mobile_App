@@ -92,16 +92,15 @@ public class MainActivity extends AppCompatActivity
             fragment_class = List_Fragment.class;
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+            fragment_class = Add_Author_Fragment.class;
 
         } else if (id == R.id.nav_slideshow) {
-
+            fragment_class = List_Fragment.class;
         } else if (id == R.id.nav_manage) {
             fragment_class = Sort_Fragment.class;
 
         } else if (id == R.id.nav_share) {
             fragment_class = Add_Book_Fragment.class;
-
-        } else if (id == R.id.nav_send) {
 
         }
         try {

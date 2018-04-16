@@ -24,6 +24,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="63dp"
+        android:onClick="add_cover"
         android:text="Dodaj okładkę" />
 
     <Button
@@ -66,5 +67,25 @@
         android:ems="10"
         android:inputType="text"
         android:text="Gatunek" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="112dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/imageView2"
+        android:layout_marginBottom="155dp"
+        android:text="Lub dodaj nr ISBN" />
+
+    <EditText
+        android:id="@+id/edit_isbn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="99dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="ISBN" />
 
 </RelativeLayout>
