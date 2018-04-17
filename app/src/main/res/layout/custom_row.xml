@@ -10,72 +10,116 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="103dp"
-        android:layout_height="118dp"
+        android:layout_width="91dp"
+        android:layout_height="128dp"
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/texttytul"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="11dp"
         app:srcCompat="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/texttytul"
-        android:layout_width="140dp"
+        android:layout_width="249dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="11dp"
         android:layout_marginTop="14dp"
         android:text="Tytul" />
 
     <TextView
         android:id="@+id/textautor"
-        android:layout_width="142dp"
+        android:layout_width="247dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_usun"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-78dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/texttytul"
+        android:layout_marginTop="43dp"
         android:text="Autor" />
 
     <TextView
         android:id="@+id/textgatunek"
-        android:layout_width="135dp"
+        android:layout_width="126dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button_usun"
-        android:layout_centerHorizontal="true"
-        android:text="TextView" />
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/texttytul"
+        android:layout_marginTop="70dp"
+        android:text="Gatunek" />
 
-    <Button
+    <TextView
+        android:id="@+id/textstatus"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textgatunek"
+        android:text="Status" />
+
+    <TextView
+        android:id="@+id/textwydawca"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/texttytul"
+        android:layout_marginTop="130dp"
+        android:text="Wydawca" />
+
+    <TextView
+        android:id="@+id/textnredycja"
+        android:layout_width="94dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/texttytul"
+        android:layout_alignTop="@+id/textrokwydania"
+        android:text="Nr edycji" />
+
+    <TextView
+        android:id="@+id/textrokwydania"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textwydawca"
+        android:layout_below="@+id/button_usun"
+        android:text="Rok" />
+
+    <TextView
+        android:id="@+id/textisbn"
+        android:layout_width="254dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/texttytul"
+        android:layout_marginTop="98dp"
+        android:text="ISBN" />
+
+    <ImageView
+        android:id="@+id/button_edytuj"
+        android:layout_width="36dp"
+        android:layout_height="34dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textwydawca"
+        android:layout_marginEnd="50dp"
+        app:srcCompat="@drawable/ic_menu_manage" />
+
+    <ImageView
+        android:id="@+id/button_usun"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textwydawca"
+        app:srcCompat="@android:drawable/ic_delete" />
+
+    <ImageView
         android:id="@+id/button_dodaj_okladke"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView2"
-        android:layout_marginStart="21dp"
-        android:text="Dodaj okładkę" />
+        android:layout_below="@+id/textwydawca"
+        android:layout_marginStart="18dp"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
-    <Button
+    <ImageView
         android:id="@+id/button_usun_okladke"
-        android:layout_width="161dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/imageView2"
-        android:layout_marginEnd="51dp"
-        android:text="Usuń okładkę" />
-
-    <Button
-        android:id="@+id/button_edytuj"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/imageView2"
-        android:layout_marginEnd="13dp"
-        android:text="Edytuj" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textwydawca"
+        android:layout_marginStart="62dp"
+        app:srcCompat="@android:drawable/ic_delete" />
 
-    <Button
-        android:id="@+id/button_usun"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/button_edytuj"
-        android:layout_marginTop="78dp"
-        android:text="Usuń" />
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.example.gilan.libraryapp;
 
+import android.animation.TypeConverter;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,78 +10,55 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ListAdapter extends BaseAdapter {
-    public static ArrayList<Row_Adapter> data;
-    private LayoutInflater mInflater;
+public class ListAdapter extends ArrayAdapter<Books>{
 
-    public ListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Row_Adapter> objects) {
-        //super(context, resource, objects);
-        data = objects;
-        mInflater = LayoutInflater.from(context);
-
+    private Context context;
+    private List<Books> b_list;
+    public ListAdapter(@NonNull Context context, int resource, ArrayList<Books> objects) {
+        super(context, resource, objects);
+        this.context = context;
+        this.b_list = objects;
     }
 
-
-
-
-
-    @Override
-    public int getCount() {
-        return 0;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
+    //called when rendering the list
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        RowBeanHolder holder;
+        //get the property we are displaying
+        Books b_ = b_list.get(position);
 
-        if(convertView == null){
+        //get the inflater and inflate the XML layout for each item
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.custom_row, null);
 
-            //row = inflater.inflate(layoutResourceId, parent, false);
-            convertView = mInflater.inflate(R.layout.custom_row, null);
-            holder = new RowBeanHolder();
-            holder.imgIcon = (ImageView)convertView.findViewById(R.id.imageView2);
-            holder.txtTitle = (TextView)convertView.findViewById(R.id.texttytul);
-            holder.txtAuthor = (TextView)convertView.findViewById(R.id.textautor);
-            holder.txtGenre = (TextView)convertView.findViewById(R.id.textgatunek);
+        TextView title_t = (TextView) view.findViewById(R.id.texttytul);
+        TextView autor_t = (TextView) view.findViewById(R.id.textautor);
+        TextView publisher_t = (TextView) view.findViewById(R.id.textwydawca);
+        TextView genre_t = (TextView) view.findViewById(R.id.textgatunek);
+        TextView isbn_t = (TextView) view.findViewById(R.id.textisbn);
+        TextView rokwyd_t = (TextView) view.findViewById(R.id.textrokwydania);
+        TextView status_t = (TextView) view.findViewById(R.id.textstatus);
+        TextView edition_t = (TextView) view.findViewById(R.id.textnredycja);
 
-            convertView.setTag(holder);
-        }
-        else
-        {
-            holder = (RowBeanHolder)convertView.getTag();
-        }
 
-        Row_Adapter object = data.get(position);
-        holder.txtTitle.setText(object.title);
-        holder.imgIcon.setImageResource(object.icon);
-        holder.txtAuthor.setText(object.author);
-        holder.txtGenre.setText(object.genre);
+        title_t.setText(b_.getTitle());
+        autor_t.setText(b_.getAuthor());
+        publisher_t.setText(b_.getPublisher());
+        genre_t.setText(b_.getGenre());
+        isbn_t.setText(b_.getIsbn_number());
+        rokwyd_t.setText( Integer.toString(b_.getYear()));
 
-        return convertView;
-    }
+        edition_t.setText(Integer.toString(b_.getEdition()));
+        status_t.setText(b_.getState());
 
-    static class RowBeanHolder
-    {
-        ImageView imgIcon;
-        TextView txtTitle;
-        TextView txtAuthor;
-        TextView txtGenre;
+
+        return view;
     }
 }
+

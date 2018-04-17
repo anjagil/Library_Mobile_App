@@ -23,10 +23,17 @@ public class List_Fragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.fragment_list_, container,
                 false);
 
-        String[] values = new String[] { "Message1", "Message2", "Message3" };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, values);
-        setListAdapter(adapter);
+
+        ArrayList<Books> books = new ArrayList();
+       books.add( new Books("ABCD-EFGH-IJKL_MNOP ", "Zbrodnia i Kara", "dostepna", "K&K", 1992, "Dostojewski", "Proza psychologiczna", 1));
+        books.add( new Books("ABCD-EFGH-IJKL_MNO1 ", "Harry Potter", "zajęta", "wydawnictwo PAN", 2001,  "j.k.rowling", "fantasy",2));
+        books.add( new Books("ABCD-EFGH-IJKL_MNO2 ", "1984", "zajęta", "wydawnictwo polskie", 1995,  "G. Orwell", "fikcja",2));
+        //create our new array adapter
+        ArrayAdapter<Books> adapter = new ListAdapter(getContext(), 0, books);
+       // ArrayAdapter<Books> adapter = new ListAdapter(getActivity(), 0, books);
+        ListView listView = (ListView) rootView.findViewById(R.id.list);
+        listView.setAdapter(adapter);
+
         return rootView;
     }
 }

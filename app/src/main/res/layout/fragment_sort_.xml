@@ -15,7 +15,7 @@
         android:text="Sortuj:" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_sortuj"
         android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -33,7 +33,7 @@
         android:layout_marginTop="76dp">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/radioButton_ascending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -41,7 +41,7 @@
             android:textColorLink="@color/colorPrimary" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/radioButton_descending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -57,7 +57,7 @@
         android:layout_centerVertical="true">
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/radioButton_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -65,7 +65,7 @@
             android:textColorLink="@color/colorPrimary" />
 
         <RadioButton
-            android:id="@+id/radioButton5"
+            android:id="@+id/radioButton_isbn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -73,7 +73,7 @@
             android:textColorLink="@color/colorPrimary" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/radioButton_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -81,7 +81,7 @@
             android:textColorLink="@color/colorPrimary" />
 
         <RadioButton
-            android:id="@+id/radioButton6"
+            android:id="@+id/radioButton_genre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
