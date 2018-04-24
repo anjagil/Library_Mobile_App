@@ -19,17 +19,17 @@
 
     <TextView
         android:id="@+id/texttytul"
-        android:layout_width="249dp"
+        android:layout_width="258dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="11dp"
+        android:layout_marginEnd="2dp"
         android:layout_marginTop="14dp"
         android:text="Tytul" />
 
     <TextView
         android:id="@+id/textautor"
-        android:layout_width="247dp"
+        android:layout_width="258dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/texttytul"
@@ -38,7 +38,7 @@
 
     <TextView
         android:id="@+id/textgatunek"
-        android:layout_width="126dp"
+        android:layout_width="165dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/texttytul"
@@ -47,7 +47,7 @@
 
     <TextView
         android:id="@+id/textstatus"
-        android:layout_width="127dp"
+        android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/textgatunek"
@@ -55,7 +55,7 @@
 
     <TextView
         android:id="@+id/textwydawca"
-        android:layout_width="160dp"
+        android:layout_width="167dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/texttytul"

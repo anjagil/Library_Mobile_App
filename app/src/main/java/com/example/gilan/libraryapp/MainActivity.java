@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +17,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener , View.OnClickListener, Sort_Fragment.SendMessage{
+public static List<Books> p_books;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,22 @@ public class MainActivity extends AppCompatActivity
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        //
+        //
+        //Added a public list, just to check the functionality before DB is created.
+        //
+        //
+        p_books = new ArrayList<>();
+        p_books.add(new Books("12345567890", "Ania z Zielonego Wzgórza", "zajęta", "S i Ska", 1992, "L.M.Montgomery", "powieść", 3));
+        p_books.add(new Books("22722232345", "Inny Świat", "zajęta", "Wyd. Literackie", 2013, "G.H.Grudziński", "biografia", 1));
+        p_books.add(new Books("978837392495", "Tango", "dostępna", "Noir Sur Blanc", 2014, "S. Mrożek", "tragedia", 5));
+        p_books.add(new Books("221234556789", "Kamizelka", "dostępna", "Greg", 2013, "Bolesław Prus", "nowela", 1));
+        p_books.add(new Books("92890857900", "Granica", "zajęta", "Greg", 2010, "Zofia Nałkowska", "powieść", 1));
+        p_books.add( new Books("ABCD-EFGH-IJKL_MNOP ", "Zbrodnia i Kara", "dostepna", "K&K", 1992, "Dostojewski", "Proza psychologiczna", 1));
+        p_books.add( new Books("ABCD-EFGH-IJKL_MNO1 ", "Harry Potter", "zajęta", "wydawnictwo PAN", 2001,  "j.k.rowling", "fantasy",2));
+        p_books.add( new Books("ABCD-EFGH-IJKL_MNO2 ", "1984", "zajęta", "wydawnictwo polskie", 1995,  "G. Orwell", "fikcja",2));
+        //create our new array adapter
     }
 
     @Override
@@ -147,5 +170,34 @@ public class MainActivity extends AppCompatActivity
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggles
       //  toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(getApplicationContext(), "TEXT", Toast.LENGTH_SHORT).show();
+
+    }
+
+    public static void adapter_set()
+    {
+
+    }
+
+    @Override
+    public void sendData(String message) {
+        String tag = message;
+        Fragment fragment = null;
+        Class fragment_class = null ;
+        fragment_class = List_Fragment.class;
+        try {
+            fragment = (Fragment) fragment_class.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
     }
 }
