@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , View.OnClickListener, Sort_Fragment.SendMessage{
+        implements NavigationView.OnNavigationItemSelectedListener , View.OnClickListener, Sort_Fragment.SendMessage, Add_Book_Fragment.SendNewBookData{
 public static List<Books> p_books;
 
     @Override
@@ -200,4 +200,24 @@ public static List<Books> p_books;
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
     }
+
+    @Override
+    public void send_new_book_data(String author_data, String title_data, String genre_data , String publisher_data, int edition_data, int pub_year_data) {
+       p_books.add(new Books("", title_data,"dostepna", publisher_data, pub_year_data, author_data, genre_data, edition_data));
+        Fragment fragment = null;
+        Class fragment_class = null ;
+        fragment_class = List_Fragment.class;
+        try {
+            fragment = (Fragment) fragment_class.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+    }
+
+
 }
