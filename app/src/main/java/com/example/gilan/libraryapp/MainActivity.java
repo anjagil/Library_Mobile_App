@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
         //
         //
         //Added a public list, just to check the functionality before DB is created.
