@@ -1,4 +1,4 @@
-package com.example.gilan.libraryapp;
+package com.example.gilan.libraryapp.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.gilan.libraryapp.R;
 import com.example.gilan.libraryapp.database.entities.Book;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
 
         private BookViewHolder(View itemView) {
             super(itemView);
-            title_t = (TextView) itemView.findViewById(R.id.texttytul);
+            title_t = (TextView) itemView.findViewById(R.id.textAuthorSurname);
             autor_t = (TextView) itemView.findViewById(R.id.textautor);
             publisher_t = (TextView) itemView.findViewById(R.id.textwydawca);
             genre_t = (TextView) itemView.findViewById(R.id.textgatunek);
@@ -52,7 +53,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
         if (mBooks != null) {
             Book current = mBooks.get(position);
             holder.title_t.setText(current.title);
-            holder.autor_t.setText(current.author);
+            holder.autor_t.setText(Integer.toString(current.author_id));
             holder.publisher_t.setText(current.publisher);
             holder.genre_t.setText(Integer.toString(current.genre_id));
             holder.isbn_t.setText(current.isbn_number);

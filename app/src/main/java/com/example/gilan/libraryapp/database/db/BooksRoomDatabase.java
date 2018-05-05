@@ -10,14 +10,19 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.example.gilan.libraryapp.database.dao.AuthorDao;
 import com.example.gilan.libraryapp.database.dao.BookDao;
+import com.example.gilan.libraryapp.database.dao.GenreDao;
+import com.example.gilan.libraryapp.database.entities.Author;
 import com.example.gilan.libraryapp.database.entities.Book;
 import com.example.gilan.libraryapp.database.entities.Genre;
 import com.example.gilan.libraryapp.database.utils.PopulateDbAsync;
 
-@Database(entities = { Book.class, Genre.class }, version = 4)
+@Database(entities = { Book.class, Genre.class, Author.class }, version = 5)
 public abstract class BooksRoomDatabase extends RoomDatabase {
     public abstract BookDao bookDao();
+    public abstract AuthorDao authorDao();
+    public abstract GenreDao genreDao();
 
     private static BooksRoomDatabase INSTANCE;
 

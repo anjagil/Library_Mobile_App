@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:paddingBottom="10dp">
+
+
+    <TextView
+        android:id="@+id/textGenreName"
+        android:layout_width="257dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:text="Autor:" />
+
+    <ImageView
+        android:id="@+id/button_edytuj"
+        android:layout_width="36dp"
+        android:layout_height="34dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_toStartOf="@+id/button_usun"
+        app:srcCompat="@drawable/ic_menu_manage" />
+
+    <ImageView
+        android:id="@+id/button_usun"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textwydawca"
+        android:layout_marginTop="10dp"
+        app:srcCompat="@android:drawable/ic_delete" />
+
+</RelativeLayout>

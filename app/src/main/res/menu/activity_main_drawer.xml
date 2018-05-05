@@ -5,19 +5,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_books"
             android:icon="@drawable/ic_menu_camera"
             android:title="Tytuły" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_authors"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Autorzy" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_genres"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Gatunki" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_sort"
             android:icon="@drawable/ic_menu_manage"
             android:title="Sortuj" />
     </group>
@@ -25,9 +25,15 @@
     <item android:title="Zarządzaj">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_add"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Dodaj" />
+
+            <item
+                android:id="@+id/nav_search"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Szukaj" />
+
 
         </menu>
     </item>

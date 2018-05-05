@@ -1,4 +1,4 @@
-package com.example.gilan.libraryapp;
+package com.example.gilan.libraryapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,11 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.gilan.libraryapp.R;
+
 public class Add_Book_Fragment extends Fragment {
 
     ViewGroup container1;
     private EditText et_title, et_author, et_genre, et_isbn, et_publisher, et_pub_year, et_edition;
-    SendNewBookData SNBD;
+    public SendNewBookData SNBD;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,7 +27,7 @@ public class Add_Book_Fragment extends Fragment {
 container1= container;
         return inflater.inflate(R.layout.fragment_add_book_, container, false);
     }
-    interface SendNewBookData {
+    public interface SendNewBookData {
         void send_new_book_data(String author_data, String title_data, String genre_data, String publisher_data, int edition_data, int pub_year_data);
     }
     @Override

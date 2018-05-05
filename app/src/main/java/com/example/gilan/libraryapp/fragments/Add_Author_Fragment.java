@@ -1,4 +1,4 @@
-package com.example.gilan.libraryapp;
+package com.example.gilan.libraryapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.gilan.libraryapp.R;
 
 public class Add_Author_Fragment extends Fragment {
 

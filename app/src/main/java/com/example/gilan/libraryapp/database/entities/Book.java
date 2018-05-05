@@ -20,7 +20,8 @@ public class Book {
 
     public int genre_id;
 
-    public String author;
+    public int author_id;
+
     public String isbn_number;
 
     @NonNull
@@ -35,13 +36,13 @@ public class Book {
 
     }
 
-    public Book(String isbn, String tytul_, String state_, String publisher_, int year_, String author_, int genre_, int edition_){
+    public Book(String isbn, String tytul_, String state_, String publisher_, int year_, int author_, int genre_, int edition_){
         this.isbn_number = isbn;
         this.title = tytul_;
         this.state = state_;
         this.publisher = publisher_;
         this.year = year_;
-        this.author = author_;
+        this.author_id = author_;
         this.edition = edition_;
         this.genre_id = genre_;
     }

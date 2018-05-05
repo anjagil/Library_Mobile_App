@@ -4,17 +4,21 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(tableName = "genres")
-public class Genre {
+@Entity(tableName = "authors")
+public class Author {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     public int id;
 
     public String name;
+    public String surname;
 
-    public Genre () { }
+    public Author() {
 
-    public Genre(String name) {
+    }
+
+    public Author(String name, String surname) {
         this.name = name;
+        this.surname = surname;
     }
 }

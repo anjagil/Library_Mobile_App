@@ -1,22 +1,22 @@
-package com.example.gilan.libraryapp;
+package com.example.gilan.libraryapp.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.Toast;
+
+import com.example.gilan.libraryapp.unused.Books;
+import com.example.gilan.libraryapp.MainActivity;
+import com.example.gilan.libraryapp.R;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,7 +36,7 @@ View rootView;
     RadioButton rb_title;
     String sorting_mode;
     public ArrayAdapter<Books> adapter_f;
-    SendMessage SM;
+    public SendMessage SM;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ View rootView;
         button.setOnClickListener(this);
         return rootView;
     }
-    interface SendMessage {
+    public interface SendMessage {
         void sendData(String message);
     }
     @Override
