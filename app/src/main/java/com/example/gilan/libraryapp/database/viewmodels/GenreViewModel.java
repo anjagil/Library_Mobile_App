@@ -23,5 +23,6 @@ public class GenreViewModel extends AndroidViewModel{
 
     public void insert(Genre genre) { mRepository.insert(genre);}
 
+    public void delete(Genre genre) { mRepository.deleteGenre(genre);}
 
 }

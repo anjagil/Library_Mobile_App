@@ -24,11 +24,13 @@ public class AuthorListAdapter extends RecyclerView.Adapter<AuthorListAdapter.Au
             author_surname = (TextView) itemView.findViewById(R.id.textAuthorSurname);
         }
     }
-
-    private final LayoutInflater mInflater;
+    public interface OnItemClickListener {
+        void onItemClick(Author item);
+    }
+        private final LayoutInflater mInflater;
     private List<Author> mAuthors; // Cached copy of words
 
-    public AuthorListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    public AuthorListAdapter(Context context, OnItemClickListener onItemClickListener, OnItemClickListener itemClickListener) { mInflater = LayoutInflater.from(context); }
 
     @Override
     public AuthorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

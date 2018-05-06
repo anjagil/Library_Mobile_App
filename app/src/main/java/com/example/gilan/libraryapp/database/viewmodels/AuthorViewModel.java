@@ -21,7 +21,9 @@ public class AuthorViewModel extends AndroidViewModel {
 
     public LiveData<List<Author>> getAllAuthors() { return mAllAuthors; }
 
-    public void insert(Author author) { mRepository.insert(author);}
 
+
+
+    public void delete(Author author) { mRepository.deleteAuthor(author);}
 
 }

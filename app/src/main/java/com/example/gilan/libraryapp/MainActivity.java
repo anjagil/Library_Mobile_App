@@ -7,9 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +23,7 @@ import android.widget.Toast;
 import com.example.gilan.libraryapp.adapters.AuthorListAdapter;
 import com.example.gilan.libraryapp.adapters.GenreListAdapter;
 import com.example.gilan.libraryapp.database.entities.Author;
+import com.example.gilan.libraryapp.database.entities.Book;
 import com.example.gilan.libraryapp.database.entities.Genre;
 import com.example.gilan.libraryapp.database.viewmodels.AuthorViewModel;
 import com.example.gilan.libraryapp.database.viewmodels.GenreViewModel;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         View.OnClickListener,
         Sort_Fragment.SendMessage,
         Search_Fragment.SendMessage,
-        Add_Book_Fragment.SendNewBookData{
+        Add_Book_Fragment.SendNewBookData, Add_Book_Fragment.GetSpinnerData{
 
     public GenreViewModel mGenreViewModel;
     private GenreListAdapter genreAdapter;
@@ -56,7 +56,18 @@ public class MainActivity extends AppCompatActivity
         createNavigationAndDrawers();
 
         genreAdapter = new GenreListAdapter(this);
-        authorAdapter = new AuthorListAdapter(this);
+        authorAdapter = new AuthorListAdapter(this, new AuthorListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Author item) {
+                System.out.println(item.name);
+            }
+        }, new AuthorListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Author item) { mAuthorViewModel.delete(item);
+                Log.d("Test", "NIE DZIALA USUWANIE!!!!!!!!!!!!!!!!!!");
+
+            }
+        });
 
         createBookListView(null, null);
     }
@@ -132,6 +143,7 @@ public class MainActivity extends AppCompatActivity
         mAuthorViewModel = ViewModelProviders.of(this).get(AuthorViewModel.class);
 
         mAuthorViewModel.getAllAuthors().observe(this, new Observer<List<Author>>() {
+
             @Override
             public void onChanged(@Nullable final List<Author> authors) {
                 authorAdapter.setAuthors(authors);
@@ -258,22 +270,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void send_new_book_data(String author_data, String title_data, String genre_data , String publisher_data, int edition_data, int pub_year_data) {
-//       p_books.add(new Books("", title_data,"dostepna", publisher_data, pub_year_data, author_data, genre_data, edition_data));
-//        Fragment fragment = null;
-//        Class fragment_class = null ;
-//        fragment_class = BookFragment.class;
-//        try {
-//            fragment = (Fragment) fragment_class.newInstance();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+    public void send_new_book_data(String author_data, final String title_data, String genre_data , final String publisher_data, final int edition_data, final int pub_year_data, final String state, final String isbn) {
+
+        // sprawdz czy jest taki autor
+final int author_data1 = 0;
+        //sprawdz czy jest taki gatunek
+final int genre_data1= 1;
+        //dodaj książkę
+
+        final BookFragment fragment = new BookFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).runOnCommit(
+                new Runnable() {
+                    public void run() {
+                        fragment.addBook(new Book(isbn, title_data, state, publisher_data, pub_year_data, author_data1, genre_data1, edition_data));
+                    }
+                }
+        ).commit();
 
     }
+
+
 
 
     public void createNavigationAndDrawers() {
@@ -301,4 +318,18 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public List<Author> get_spinner_data() {
+
+        mAuthorViewModel = ViewModelProviders.of(this).get(AuthorViewModel.class);
+
+        mAuthorViewModel.getAllAuthors().observe(this, new Observer<List<Author>>() {
+
+            @Override
+            public void onChanged(@Nullable final List<Author> authors) {
+                authorAdapter.setAuthors(authors);
+            }
+        });
+        return null;
+    }
 }

@@ -28,22 +28,25 @@ public class AuthorRepository {
         return mAllAuthors;
     }
 
-    public void insert(Author Author) {
-        new AuthorRepository.insertAsyncTask(mAuthorDao).execute(Author);
+
+
+    public void deleteAuthor(Author author) {
+        new deleteAsyncTask(mAuthorDao).execute(author);
     }
 
-    private static class insertAsyncTask extends AsyncTask<Author, Void, Void> {
+    private static class deleteAsyncTask extends AsyncTask<Author, Void, Void> {
 
         private AuthorDao mAsyncTaskDao;
 
-        insertAsyncTask(AuthorDao dao) {
+        deleteAsyncTask(AuthorDao dao) {
             mAsyncTaskDao = dao;
         }
 
         @Override
         protected Void doInBackground(final Author... params) {
-            mAsyncTaskDao.insert(params[0]);
+            mAsyncTaskDao.deleteAuthors(params[0]);
             return null;
         }
     }
+
 }

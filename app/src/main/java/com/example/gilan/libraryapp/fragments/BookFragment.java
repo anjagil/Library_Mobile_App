@@ -38,6 +38,7 @@ public class BookFragment extends Fragment {
             @Override
             public void onItemClick(Book item) {
                 System.out.println(item.title);
+
             }
         },
             new BookListAdapter.OnItemClickListener() {
@@ -95,6 +96,11 @@ public class BookFragment extends Fragment {
         });
     }
 
+    public void addBook(Book book) {
+
+            mBookViewModel.insert(book);
+
+    }
 
 
 

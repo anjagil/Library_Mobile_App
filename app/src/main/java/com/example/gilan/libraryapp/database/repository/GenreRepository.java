@@ -44,4 +44,22 @@ public class GenreRepository {
             return null;
         }
     }
+    public void deleteGenre(Genre genre) {
+        new deleteAsyncTask(mGenreDao).execute(genre);
+    }
+
+    private static class deleteAsyncTask extends AsyncTask<Genre, Void, Void> {
+
+        private GenreDao mAsyncTaskDao;
+
+        deleteAsyncTask(GenreDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Genre... params) {
+            mAsyncTaskDao.deleteGenres(params[0]);
+            return null;
+        }
+    }
 }
