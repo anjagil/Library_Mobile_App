@@ -22,31 +22,26 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.gilan.libraryapp.adapters.AuthorListAdapter;
-import com.example.gilan.libraryapp.adapters.BookListAdapter;
 import com.example.gilan.libraryapp.adapters.GenreListAdapter;
 import com.example.gilan.libraryapp.database.entities.Author;
-import com.example.gilan.libraryapp.database.entities.Book;
 import com.example.gilan.libraryapp.database.entities.Genre;
 import com.example.gilan.libraryapp.database.viewmodels.AuthorViewModel;
-import com.example.gilan.libraryapp.database.viewmodels.BookViewModel;
 import com.example.gilan.libraryapp.database.viewmodels.GenreViewModel;
-import com.example.gilan.libraryapp.fragments.Add_Author_Fragment;
 import com.example.gilan.libraryapp.fragments.Add_Book_Fragment;
 import com.example.gilan.libraryapp.fragments.AuthorFragment;
 import com.example.gilan.libraryapp.fragments.BookFragment;
 import com.example.gilan.libraryapp.fragments.GenreFragment;
+import com.example.gilan.libraryapp.fragments.Search_Fragment;
 import com.example.gilan.libraryapp.fragments.Sort_Fragment;
-import com.example.gilan.libraryapp.unused.Books;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , View.OnClickListener, Sort_Fragment.SendMessage, Add_Book_Fragment.SendNewBookData{
-
-    public static List<Books> p_books;
-
-    public BookViewModel mBookViewModel;
-    private BookListAdapter adapter;
+        implements NavigationView.OnNavigationItemSelectedListener ,
+        View.OnClickListener,
+        Sort_Fragment.SendMessage,
+        Search_Fragment.SendMessage,
+        Add_Book_Fragment.SendNewBookData{
 
     public GenreViewModel mGenreViewModel;
     private GenreListAdapter genreAdapter;
@@ -58,61 +53,36 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        createNavigationAndDrawers();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        adapter = new BookListAdapter(this);
         genreAdapter = new GenreListAdapter(this);
         authorAdapter = new AuthorListAdapter(this);
 
-        createBookListView();
+        createBookListView(null, null);
     }
 
-    public void createBookListView() {
-
-        BookFragment fragment = null;
-        Class fragment_class = BookFragment.class;
-
-        try {
-            fragment = (BookFragment) fragment_class.newInstance();
-            fragment.setAdapter(adapter);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
+    public void createBookListView(final String sortBy, final String sortDir) {
+        final BookFragment fragment = new BookFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).runOnCommit(
+                new Runnable() {
+                    public void run() {
+                        fragment.allBooks(sortBy, sortDir);
+                    }
+                }
+        ).commit();
+    }
 
-        mBookViewModel = ViewModelProviders.of(this).get(BookViewModel.class);
-
-        mBookViewModel.getAllBooks().observe(this, new Observer<List<Book>>() {
-            @Override
-            public void onChanged(@Nullable final List<Book> books) {
-                adapter.setBooks(books);
-            }
-        });
+    public void createSearchBookListView(final String type, final String searchValue) {
+        final BookFragment fragment = new BookFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).runOnCommit(
+                new Runnable() {
+                    public void run() {
+                        fragment.searchBooks(type, searchValue);
+                    }
+                }
+        ).commit();
     }
 
     public void createGenreListView() {
@@ -161,7 +131,7 @@ public class MainActivity extends AppCompatActivity
 
         mAuthorViewModel = ViewModelProviders.of(this).get(AuthorViewModel.class);
 
-        mAuthorViewModel.getmAllAuthors().observe(this, new Observer<List<Author>>() {
+        mAuthorViewModel.getAllAuthors().observe(this, new Observer<List<Author>>() {
             @Override
             public void onChanged(@Nullable final List<Author> authors) {
                 authorAdapter.setAuthors(authors);
@@ -204,6 +174,23 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void sendData(String message) {
+        if(message.substring(0,6).equalsIgnoreCase("search")) {
+             String[] messageData = message.split("!");
+             String type = messageData[1];
+             String value = messageData.length > 2 ? messageData[2] : "";
+
+             createSearchBookListView(type, value);
+        } else {
+            String type = message.substring(2);
+            String sort = message.substring(0,1);
+
+            createBookListView(type, sort);
+        }
+    }
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -211,14 +198,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_books) {
-            createBookListView();
-        }
-        else if (id == R.id.nav_genres){
+            createBookListView(null, null);
+        } else if (id == R.id.nav_genres){
             createGenreListView();
         } else if (id == R.id.nav_authors) {
             createAuthorListView();
-        }
-        else {
+        } else {
             Fragment fragment = null;
             Class fragment_class = null;
 
@@ -227,6 +212,8 @@ public class MainActivity extends AppCompatActivity
             }
             else if (id == R.id.nav_add) {
                 fragment_class = Add_Book_Fragment.class;
+            } else if (id == R.id.nav_search) {
+                fragment_class = Search_Fragment.class;
             }
 
             try {
@@ -270,45 +257,47 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public static void adapter_set()
-    {
-
-    }
-
-    @Override
-    public void sendData(String message) {
-        String tag = message;
-        Fragment fragment = null;
-        Class fragment_class = null ;
-        fragment_class = BookFragment.class;
-        try {
-            fragment = (Fragment) fragment_class.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-
-    }
-
     @Override
     public void send_new_book_data(String author_data, String title_data, String genre_data , String publisher_data, int edition_data, int pub_year_data) {
-       p_books.add(new Books("", title_data,"dostepna", publisher_data, pub_year_data, author_data, genre_data, edition_data));
-        Fragment fragment = null;
-        Class fragment_class = null ;
-        fragment_class = BookFragment.class;
-        try {
-            fragment = (Fragment) fragment_class.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+//       p_books.add(new Books("", title_data,"dostepna", publisher_data, pub_year_data, author_data, genre_data, edition_data));
+//        Fragment fragment = null;
+//        Class fragment_class = null ;
+//        fragment_class = BookFragment.class;
+//        try {
+//            fragment = (Fragment) fragment_class.newInstance();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
+    }
+
+
+    public void createNavigationAndDrawers() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+//
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
 

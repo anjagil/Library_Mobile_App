@@ -16,12 +16,22 @@ public class BookViewModel extends AndroidViewModel{
     public BookViewModel(Application application) {
         super(application);
         mRepository = new BookRepository(application);
-        mAllBooks = mRepository.getAllBooks();
     }
 
-    public LiveData<List<Book>> getAllBooks() { return mAllBooks; }
+    public LiveData<List<Book>> getAllBooks(String sortBy, String sortDir) {
+        return mAllBooks = mRepository.getAllBooks(sortBy, sortDir);
+    }
 
     public void insert(Book book) { mRepository.insert(book);}
 
+    public LiveData<List<Book>> byGenre(int genre_id) {
+        return mRepository.getBooksByGenre(genre_id);
+    }
+
+    public LiveData<List<Book>> searchBooks(String type, String searchValue) {
+        return mRepository.searchBooks(type, searchValue);
+    }
+
+    public void delete(Book book) { mRepository.deleteBook(book);}
 
 }

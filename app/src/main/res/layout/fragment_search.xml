@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context=".fragments.Sort_Fragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <EditText
+        android:id="@+id/searchText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Type in search value..."
+        android:inputType="textPersonName" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="148dp"
+        android:layout_below="@+id/searchText"
+        android:layout_centerHorizontal="true"
+        android:gravity="top|bottom|center_vertical"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+
+            >
+
+            <RadioButton
+                android:id="@+id/radioButton_author"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_weight="1"
+                android:text="Według autorów"
+                android:textColorLink="@color/colorPrimary" />
+
+            <RadioButton
+                android:id="@+id/radioButton_isbn"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_weight="1"
+                android:text="Według ISBN"
+                android:textColorLink="@color/colorPrimary" />
+
+            <RadioButton
+                android:id="@+id/radioButton_title"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_weight="1"
+                android:text="Według Tytułu"
+                android:textColorLink="@color/colorPrimary" />
+
+            <RadioButton
+                android:id="@+id/radioButton_genre"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_weight="1"
+                android:text="Według Gatunków"
+                android:textColorLink="@color/colorPrimary" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Szukaj" />
+
+</RelativeLayout>

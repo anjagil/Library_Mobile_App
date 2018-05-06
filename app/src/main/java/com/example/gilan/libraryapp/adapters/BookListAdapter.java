@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gilan.libraryapp.R;
@@ -13,6 +14,10 @@ import com.example.gilan.libraryapp.database.entities.Book;
 import java.util.List;
 
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolder> {
+
+    public interface OnItemClickListener {
+        void onItemClick(Book item);
+    }
 
     class BookViewHolder extends RecyclerView.ViewHolder {
         private final TextView title_t;
@@ -23,6 +28,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
         private final TextView rokwyd_t;
         private final TextView status_t;
         private final TextView edition_t;
+        private final ImageView editButton;
+        private final ImageView removeButton;
 
         private BookViewHolder(View itemView) {
             super(itemView);
@@ -34,17 +41,42 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             rokwyd_t = (TextView) itemView.findViewById(R.id.textrokwydania);
             status_t = (TextView) itemView.findViewById(R.id.textstatus);
             edition_t = (TextView) itemView.findViewById(R.id.textnredycja);
+            editButton = (ImageView) itemView.findViewById(R.id.button_edytuj);
+            removeButton = (ImageView) itemView.findViewById(R.id.button_usun);
         }
+
+        public void bind(final Book book, final OnItemClickListener editListener,
+                         final OnItemClickListener removeListener) {
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    editListener.onItemClick(book);
+                }
+            });
+
+            removeButton.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    removeListener.onItemClick(book);
+                }
+            });
+        }
+
     }
 
     private final LayoutInflater mInflater;
     private List<Book> mBooks; // Cached copy of words
+    private OnItemClickListener editClickListener;
+    private OnItemClickListener removeClickListener;
 
-    public BookListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    public BookListAdapter(Context context, OnItemClickListener editListener,
+                           OnItemClickListener removeListener) {
+        mInflater = LayoutInflater.from(context);
+        this.editClickListener = editListener;
+        this.removeClickListener = removeListener;
+    }
 
     @Override
     public BookViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.custom_row, parent, false);
+        final View itemView = mInflater.inflate(R.layout.custom_row, parent, false);
         return new BookViewHolder(itemView);
     }
 
@@ -61,8 +93,9 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
 
             holder.edition_t.setText(Integer.toString(current.edition));
             holder.status_t.setText(current.state);
+
+            holder.bind(current, editClickListener, removeClickListener);
         } else {
-            // Covers the case of data not being ready yet.
             holder.title_t.setText("No Word");
         }
     }

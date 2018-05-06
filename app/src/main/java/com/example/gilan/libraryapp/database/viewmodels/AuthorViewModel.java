@@ -19,7 +19,7 @@ public class AuthorViewModel extends AndroidViewModel {
         mAllAuthors = mRepository.getAllAuthors();
     }
 
-    public LiveData<List<Author>> getmAllAuthors() { return mAllAuthors; }
+    public LiveData<List<Author>> getAllAuthors() { return mAllAuthors; }
 
     public void insert(Author author) { mRepository.insert(author);}
 
