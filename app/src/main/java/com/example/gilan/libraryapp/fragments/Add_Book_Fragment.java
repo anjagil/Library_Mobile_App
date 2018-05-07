@@ -1,11 +1,19 @@
 package com.example.gilan.libraryapp.fragments;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +21,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.gilan.libraryapp.R;
 import com.example.gilan.libraryapp.database.entities.Author;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +45,10 @@ public class Add_Book_Fragment extends Fragment implements AdapterView.OnItemSel
     Spinner spinner_status, spinner_author;
     List<String> categories;
     String state_string;
+    Button button_camera, button_sd;
+    ImageView bookView;
+    Integer REQUEST_CAMERA=0, SELECT_FILE=1;
+    byte[] bookPhotoByte;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,7 +62,7 @@ public class Add_Book_Fragment extends Fragment implements AdapterView.OnItemSel
         spinner_status.setOnItemSelectedListener(this);
         spinner_author = (Spinner) rootView.findViewById(R.id.spinner_autor);
         spinner_author.setOnItemSelectedListener(this);
-
+bookView = (ImageView) rootView.findViewById(R.id.imageView_book) ;
         categories  = new ArrayList<String>();
 //for (int i=1; i<getData.get_spinner_data().size(); i++)
 {
@@ -127,11 +143,32 @@ List<String> authors = new ArrayList<String>();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Add_photo_fragment nextFrag = new Add_photo_fragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(container1.getId(), nextFrag)
-                        .addToBackStack(null)
-                        .commit();
+                final CharSequence[] items={"Camera","Gallery", "Cancel"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Add Image");
+
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (items[i].equals("Camera")) {
+
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent,REQUEST_CAMERA);
+
+                        } else if (items[i].equals("Gallery")) {
+
+                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            intent.setType("image/*");
+                            startActivityForResult(intent, SELECT_FILE);
+
+                        } else if (items[i].equals("Cancel")) {
+                            dialogInterface.dismiss();
+                        }
+                    }
+                });
+                builder.show();
             }
         });
 
@@ -141,7 +178,7 @@ List<String> authors = new ArrayList<String>();
             public void onClick(View v) {
 
                 //sprawdz czy wszystkie pola są zapisane
-                et_author = (EditText) view.findViewById(R.id.edit_autor);
+               // et_author = (EditText) view.findViewById(R.id.edit_autor);
                 et_title = (EditText) view.findViewById(R.id.edit_title);
                 et_genre = (EditText) view.findViewById(R.id.edit_gatunek);
                 et_isbn = (EditText) view.findViewById(R.id.edit_isbn);
@@ -161,11 +198,68 @@ List<String> authors = new ArrayList<String>();
                     Toast.makeText(getContext(), "Uzupełnij wymagane pola", Toast.LENGTH_SHORT).show();
                 } else
                       SNBD.send_new_book_data( "String", et_title.getText().toString(), et_genre.getText().toString(), et_publisher.getText().toString(), Integer.parseInt(et_edition.getText().toString()), Integer.parseInt(et_pub_year.getText().toString()), state_string, et_isbn.getText().toString());
-                    //Toast.makeText(getContext(), et_genre.getText().toString(), Toast.LENGTH_SHORT).show();
+
 
 
 
             }
         });
+    }
+    public byte[] convertImageToByte(Uri uri){
+        byte[] data = null;
+        try {
+            ContentResolver cr = getContext().getContentResolver();
+            InputStream inputStream = cr.openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            data = baos.toByteArray();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+    @Override
+    public  void onActivityResult( int requestCOe, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCOe, resultCode, data);
+
+
+        if(requestCOe==REQUEST_CAMERA){
+
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            bookView.setImageBitmap(bitmap);
+            //3
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+            bookPhotoByte = bytes.toByteArray();
+            //4
+            // File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
+            //  try {
+            //     file.createNewFile();
+            //     FileOutputStream fo = new FileOutputStream(file);
+            //     //5
+            //    fo.write(bytes.toByteArray());
+            //     fo.close();
+            //     Toast.makeText(getContext(), file.getAbsolutePath().toString(), Toast.LENGTH_SHORT).show();
+            //  } catch (IOException e) {
+            //      // TODO Auto-generated catch block
+            //      e.printStackTrace();
+            //  }
+
+        }else if(requestCOe==SELECT_FILE){
+
+            Uri selectedImageUri = data.getData();
+            Toast.makeText(getContext(), selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
+            bookView.setImageURI(selectedImageUri);
+            bookPhotoByte = convertImageToByte(selectedImageUri);
+        }
+
+
+
+
+
+
     }
 }
