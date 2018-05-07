@@ -2,12 +2,20 @@ package com.example.gilan.libraryapp.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,6 +36,9 @@ import com.example.gilan.libraryapp.database.viewmodels.AuthorViewModel;
 import com.example.gilan.libraryapp.database.viewmodels.BookViewModel;
 import com.example.gilan.libraryapp.database.viewmodels.GenreViewModel;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,6 +69,10 @@ public class Add_Book_Fragment extends Fragment implements AdapterView.OnItemSel
     List<Genre> genres;
 
     String state_string;
+    Button button_camera, button_sd;
+    ImageView bookView;
+    Integer REQUEST_CAMERA=0, SELECT_FILE=1;
+    byte[] bookPhotoByte;
 
     public ArrayAdapter<String> spinner_data_adapter;
     public ArrayAdapter<Author> author_data_adapter;
@@ -101,6 +117,13 @@ public class Add_Book_Fragment extends Fragment implements AdapterView.OnItemSel
     }
 
     private void addStates() {
+bookView = (ImageView) rootView.findViewById(R.id.imageView_book) ;
+
+//for (int i=1; i<getData.get_spinner_data().size(); i++)
+{
+//    categories.add(getData.get_spinner_data().get(i).name +getData.get_spinner_data().get(i).surname );
+}
+// Spinner Drop down elements
         List<String> states = new ArrayList<String>();
         states.add("posiadana");
         states.add("wypożyczona");
@@ -228,11 +251,32 @@ public class Add_Book_Fragment extends Fragment implements AdapterView.OnItemSel
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Add_photo_fragment nextFrag = new Add_photo_fragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(container1.getId(), nextFrag)
-                        .addToBackStack(null)
-                        .commit();
+                final CharSequence[] items={"Camera","Gallery", "Cancel"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Add Image");
+
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (items[i].equals("Camera")) {
+
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent,REQUEST_CAMERA);
+
+                        } else if (items[i].equals("Gallery")) {
+
+                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            intent.setType("image/*");
+                            startActivityForResult(intent, SELECT_FILE);
+
+                        } else if (items[i].equals("Cancel")) {
+                            dialogInterface.dismiss();
+                        }
+                    }
+                });
+                builder.show();
             }
         });
 
@@ -267,6 +311,64 @@ public class Add_Book_Fragment extends Fragment implements AdapterView.OnItemSel
                 }
             }
         });
+    }
+    // from https://colinyeoh.wordpress.com/2012/05/18/android-convert-image-uri-to-byte-array/
+    public byte[] convertImageToByte(Uri uri){
+        byte[] data = null;
+        try {
+            ContentResolver cr = getContext().getContentResolver();
+            InputStream inputStream = cr.openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            data = baos.toByteArray();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+    @Override
+    public  void onActivityResult( int requestCOe, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCOe, resultCode, data);
+
+
+        if(requestCOe==REQUEST_CAMERA){
+
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            bookView.setImageBitmap(bitmap);
+            //3
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+            bookPhotoByte = bytes.toByteArray();
+            //4
+            // File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
+            //  try {
+            //     file.createNewFile();
+            //     FileOutputStream fo = new FileOutputStream(file);
+            //     //5
+            //    fo.write(bytes.toByteArray());
+            //     fo.close();
+            //     Toast.makeText(getContext(), file.getAbsolutePath().toString(), Toast.LENGTH_SHORT).show();
+            //  } catch (IOException e) {
+            //      // TODO Auto-generated catch block
+            //      e.printStackTrace();
+            //  }
+
+        }else if(requestCOe==SELECT_FILE){
+
+            Uri selectedImageUri = data.getData();
+            Toast.makeText(getContext(), selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
+            bookView.setImageURI(selectedImageUri);
+            bookPhotoByte = convertImageToByte(selectedImageUri);
+        }
+
+
+
+
+
+
     }
 
     public Book createOrUpdateBook() {

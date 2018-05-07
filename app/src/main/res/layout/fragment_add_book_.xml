@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageView_book"
                 android:layout_width="match_parent"
                 android:layout_height="171dp"
 
