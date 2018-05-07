@@ -37,6 +37,8 @@ public class Book {
     public int year;
     public int edition;
 
+    public byte[] imageInBytes;
+
     public Book() {
 
     }

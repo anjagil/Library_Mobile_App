@@ -1,6 +1,8 @@
 package com.example.gilan.libraryapp.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
         private final TextView edition_t;
         private final ImageView editButton;
         private final ImageView removeButton;
+        private final ImageView bookImage;
 
         private BookViewHolder(View itemView) {
             super(itemView);
@@ -44,6 +47,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             edition_t = (TextView) itemView.findViewById(R.id.textnredycja);
             editButton = (ImageView) itemView.findViewById(R.id.button_edytuj);
             removeButton = (ImageView) itemView.findViewById(R.id.button_usun);
+            bookImage = (ImageView) itemView.findViewById(R.id.bookImage);
         }
 
         public void bind(final Book book, final OnItemClickListener editListener,
@@ -95,6 +99,12 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
 
             holder.edition_t.setText(Integer.toString(current.edition));
             holder.status_t.setText(current.state);
+
+            if(current.imageInBytes != null && current.imageInBytes.length > 0) {
+                Bitmap bookImageFile = BitmapFactory.decodeByteArray(current.imageInBytes,
+                        0, current.imageInBytes.length);
+                holder.bookImage.setImageBitmap(bookImageFile);
+            }
 
             holder.bind(current, editClickListener, removeClickListener);
         } else {

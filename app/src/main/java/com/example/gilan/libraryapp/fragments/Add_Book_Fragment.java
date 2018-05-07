@@ -342,33 +342,17 @@ bookView = (ImageView) rootView.findViewById(R.id.imageView_book) ;
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
             bookPhotoByte = bytes.toByteArray();
-            //4
-            // File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
-            //  try {
-            //     file.createNewFile();
-            //     FileOutputStream fo = new FileOutputStream(file);
-            //     //5
-            //    fo.write(bytes.toByteArray());
-            //     fo.close();
-            //     Toast.makeText(getContext(), file.getAbsolutePath().toString(), Toast.LENGTH_SHORT).show();
-            //  } catch (IOException e) {
-            //      // TODO Auto-generated catch block
-            //      e.printStackTrace();
-            //  }
 
-        }else if(requestCOe==SELECT_FILE){
+        }
+        else if(requestCOe==SELECT_FILE){
 
             Uri selectedImageUri = data.getData();
             Toast.makeText(getContext(), selectedImageUri.toString(), Toast.LENGTH_SHORT).show();
             bookView.setImageURI(selectedImageUri);
             bookPhotoByte = convertImageToByte(selectedImageUri);
+
+
         }
-
-
-
-
-
-
     }
 
     public Book createOrUpdateBook() {
@@ -384,6 +368,7 @@ bookView = (ImageView) rootView.findViewById(R.id.imageView_book) ;
             editedBook.genre_fk_id = genre.genre_id;
             editedBook.author_fk_id = author.author_id;
             editedBook.edition = Integer.parseInt(et_edition.getText().toString());
+            editedBook.imageInBytes = bookPhotoByte != null ? bookPhotoByte : null;
             return editedBook;
         } else {
             Book book = new Book(
@@ -396,6 +381,7 @@ bookView = (ImageView) rootView.findViewById(R.id.imageView_book) ;
                     genre.genre_id,
                     Integer.parseInt(et_edition.getText().toString())
             );
+            book.imageInBytes = bookPhotoByte != null ? bookPhotoByte : null;
             return book;
         }
     }

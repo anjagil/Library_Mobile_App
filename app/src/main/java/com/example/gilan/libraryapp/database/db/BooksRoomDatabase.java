@@ -18,7 +18,7 @@ import com.example.gilan.libraryapp.database.entities.Book;
 import com.example.gilan.libraryapp.database.entities.Genre;
 import com.example.gilan.libraryapp.database.utils.PopulateDbAsync;
 
-@Database(entities = { Book.class, Genre.class, Author.class }, version = 18)
+@Database(entities = { Book.class, Genre.class, Author.class }, version = 20)
 public abstract class BooksRoomDatabase extends RoomDatabase {
     public abstract BookDao bookDao();
     public abstract AuthorDao authorDao();
