@@ -1,5 +1,7 @@
 package com.example.gilan.libraryapp.database.entities;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
@@ -8,9 +10,9 @@ import android.support.annotation.NonNull;
 
 @Entity(tableName = "books",
         indices = { @Index(value = { "isbn_number", "title" }) }
-//      ,  foreignKeys = @ForeignKey(entity = Genre.class,
-//                                    parentColumns = "id",
-//                                    childColumns = "genre_id")
+//      ,foreignKeys = @ForeignKey(entity = Author.class,
+//                                    parentColumns = "author_id",
+//                                    childColumns = "author_fk_id")
         )
 public class Book {
 
@@ -18,9 +20,12 @@ public class Book {
     @NonNull
     public int id;
 
-    public int genre_id;
+    public String author_name;
+    public String author_surname;
+    public String genre_name;
 
-    public int author_id;
+    public int genre_fk_id;
+    public int author_fk_id;
 
     public String isbn_number;
 
@@ -42,9 +47,10 @@ public class Book {
         this.state = state_;
         this.publisher = publisher_;
         this.year = year_;
-        this.author_id = author_;
+        this.author_fk_id = author_;
         this.edition = edition_;
-        this.genre_id = genre_;
+        this.genre_fk_id = genre_;
     }
+
 
 }

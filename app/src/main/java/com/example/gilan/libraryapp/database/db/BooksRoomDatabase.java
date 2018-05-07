@@ -18,7 +18,7 @@ import com.example.gilan.libraryapp.database.entities.Book;
 import com.example.gilan.libraryapp.database.entities.Genre;
 import com.example.gilan.libraryapp.database.utils.PopulateDbAsync;
 
-@Database(entities = { Book.class, Genre.class, Author.class }, version = 5)
+@Database(entities = { Book.class, Genre.class, Author.class }, version = 18)
 public abstract class BooksRoomDatabase extends RoomDatabase {
     public abstract BookDao bookDao();
     public abstract AuthorDao authorDao();
@@ -32,8 +32,8 @@ public abstract class BooksRoomDatabase extends RoomDatabase {
                 if(INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                         BooksRoomDatabase.class, "books_database")
-                        .fallbackToDestructiveMigration()
-                        .addCallback(sBooksDatabaseCallback)
+//                        .fallbackToDestructiveMigration()
+//                        .addCallback(sBooksDatabaseCallback)
                         .build();
                 }
             }

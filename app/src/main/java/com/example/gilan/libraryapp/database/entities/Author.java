@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 public class Author {
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    public int id;
+    public int author_id;
 
     public String name;
     public String surname;
@@ -20,5 +20,10 @@ public class Author {
     public Author(String name, String surname) {
         this.name = name;
         this.surname = surname;
+    }
+
+    @Override
+    public String toString() {
+        return this.name + " " + this.surname;
     }
 }

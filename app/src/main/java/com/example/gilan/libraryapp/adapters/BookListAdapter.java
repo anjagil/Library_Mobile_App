@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gilan.libraryapp.R;
+import com.example.gilan.libraryapp.database.entities.Author;
 import com.example.gilan.libraryapp.database.entities.Book;
 
 import java.util.List;
@@ -85,9 +86,10 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
         if (mBooks != null) {
             Book current = mBooks.get(position);
             holder.title_t.setText(current.title);
-            holder.autor_t.setText(Integer.toString(current.author_id));
+//            holder.autor_t.setText(Integer.toString(current.author_id));
+            holder.autor_t.setText(current.author_name + current.author_surname);
             holder.publisher_t.setText(current.publisher);
-            holder.genre_t.setText(Integer.toString(current.genre_id));
+            holder.genre_t.setText(current.genre_name);
             holder.isbn_t.setText(current.isbn_number);
             holder.rokwyd_t.setText( Integer.toString(current.year));
 

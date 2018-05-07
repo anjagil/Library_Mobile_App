@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity
         View.OnClickListener,
         Sort_Fragment.SendMessage,
         Search_Fragment.SendMessage,
-        Add_Book_Fragment.SendNewBookData, Add_Book_Fragment.GetSpinnerData{
+        Add_Book_Fragment.SendNewBookData,
+        BookFragment.SendMessage {
 
     public GenreViewModel mGenreViewModel;
     private GenreListAdapter genreAdapter;
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void createBookListView(final String sortBy, final String sortDir) {
+        setTitle("Tytuły");
+
         final BookFragment fragment = new BookFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).runOnCommit(
@@ -143,7 +146,6 @@ public class MainActivity extends AppCompatActivity
         mAuthorViewModel = ViewModelProviders.of(this).get(AuthorViewModel.class);
 
         mAuthorViewModel.getAllAuthors().observe(this, new Observer<List<Author>>() {
-
             @Override
             public void onChanged(@Nullable final List<Author> authors) {
                 authorAdapter.setAuthors(authors);
@@ -151,7 +153,25 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    public void openBookInAddView(int id) {
+        Add_Book_Fragment fragment = null;
+        Class fragment_class = Add_Book_Fragment.class;
 
+        try {
+            fragment = (Add_Book_Fragment) fragment_class.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("book_id", id);
+
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+    }
 
     @Override
     public void onBackPressed() {
@@ -185,10 +205,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void sendData(String message) {
-        if(message.substring(0,6).equalsIgnoreCase("search")) {
+        if(message.contains("OpenBook")) {
+            String id = message.split(":")[1];
+            openBookInAddView(Integer.parseInt(id));
+        } else if(message.substring(0,6).equalsIgnoreCase("search")) {
              String[] messageData = message.split("!");
              String type = messageData[1];
              String value = messageData.length > 2 ? messageData[2] : "";
@@ -202,6 +224,45 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+       // toggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+      //  toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(getApplicationContext(), "TEXT", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void send_new_book_data(Book book) {
+        createBookListView(null, null);
+    }
+
+    public void createNavigationAndDrawers() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -247,89 +308,8 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-       // toggle.syncState();
-    }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
-      //  toggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onClick(View v) {
-        Toast.makeText(getApplicationContext(), "TEXT", Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void send_new_book_data(String author_data, final String title_data, String genre_data , final String publisher_data, final int edition_data, final int pub_year_data, final String state, final String isbn) {
-
-        // sprawdz czy jest taki autor
-final int author_data1 = 0;
-        //sprawdz czy jest taki gatunek
-final int genre_data1= 1;
-        //dodaj książkę
-
-        final BookFragment fragment = new BookFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).runOnCommit(
-                new Runnable() {
-                    public void run() {
-                        fragment.addBook(new Book(isbn, title_data, state, publisher_data, pub_year_data, author_data1, genre_data1, edition_data));
-                    }
-                }
-        ).commit();
-
-    }
-
-
-
-
-    public void createNavigationAndDrawers() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-//
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
-
-    @Override
-    public List<Author> get_spinner_data() {
-
-        mAuthorViewModel = ViewModelProviders.of(this).get(AuthorViewModel.class);
-
-        mAuthorViewModel.getAllAuthors().observe(this, new Observer<List<Author>>() {
-
-            @Override
-            public void onChanged(@Nullable final List<Author> authors) {
-                authorAdapter.setAuthors(authors);
-            }
-        });
-        return null;
-    }
 }

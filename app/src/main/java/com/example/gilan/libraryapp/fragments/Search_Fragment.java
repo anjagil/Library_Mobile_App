@@ -58,9 +58,9 @@ public class Search_Fragment extends Fragment implements OnClickListener {
                 } else if (rb_isbn.isChecked()) {
                     searchedValue += "isbn_number";
                 } else if (rb_genre.isChecked()) {
-                    searchedValue += "genre_id";
+                    searchedValue += "genre_name";
                 } else if (rb_author.isChecked()) {
-                    searchedValue += "author_id";
+                    searchedValue += "author_name";
                 } else {
                     return;
                 }

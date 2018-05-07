@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import java.util.List;
 public class BookFragment extends Fragment {
     private BookListAdapter mBookListAdapter;
     public BookViewModel mBookViewModel;
+    public BookFragment.SendMessage SM;
 
     public BookFragment() { }
 
@@ -37,8 +39,7 @@ public class BookFragment extends Fragment {
             new BookListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Book item) {
-                System.out.println(item.title);
-
+                SM.sendData("OpenBook:" + item.id);
             }
         },
             new BookListAdapter.OnItemClickListener() {
@@ -53,25 +54,26 @@ public class BookFragment extends Fragment {
         return rv;
     }
 
+    public interface SendMessage {
+        void sendData(String message);
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        try {
+            SM = (BookFragment.SendMessage) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Error in retrieving data. Please try again");
+        }
+
         mBookViewModel = ViewModelProviders.of(this).get(BookViewModel.class);
     }
 
 
     public void setAdapter(BookListAdapter mBookListAdapter) {
         this.mBookListAdapter = mBookListAdapter;
-    }
-
-    public void booksByGenre(int id) {
-        mBookViewModel.byGenre(id).observe(this, new Observer<List<Book>>() {
-            @Override
-            public void onChanged(@Nullable final List<Book> books) {
-                mBookListAdapter.setBooks(books);
-            }
-        });
     }
 
     public void delete(Book book) {

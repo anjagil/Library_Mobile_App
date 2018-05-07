@@ -24,8 +24,10 @@ public class BookViewModel extends AndroidViewModel{
 
     public void insert(Book book) { mRepository.insert(book);}
 
-    public LiveData<List<Book>> byGenre(int genre_id) {
-        return mRepository.getBooksByGenre(genre_id);
+    public void update(Book book) { mRepository.update(book);}
+
+    public LiveData<Book> getBookById(int id) {
+        return mRepository.bookById(id);
     }
 
     public LiveData<List<Book>> searchBooks(String type, String searchValue) {

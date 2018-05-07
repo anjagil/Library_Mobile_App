@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 public class Genre {
     @PrimaryKey(autoGenerate = true)
     @NonNull
-    public int id;
+    public int genre_id;
 
     public String name;
 
@@ -16,5 +16,10 @@ public class Genre {
 
     public Genre(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

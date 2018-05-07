@@ -68,14 +68,6 @@
                 android:layout_height="wrap_content" />
 
             <EditText
-                android:id="@+id/edit_gatunek"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:inputType="text"
-                android:hint="Gatunek" />
-
-            <EditText
                 android:id="@+id/edit_wydawca"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,15 +80,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:inputType="text"
-                android:hint="Rok Wydania" />
+                android:hint="Rok Wydania"
+                android:inputType="number" />
+
             <EditText
                 android:id="@+id/edit_nr_wydania"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:inputType="text"
-                android:hint="Nr Wydania" />
+                android:hint="Nr Wydania"
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/edit_isbn"

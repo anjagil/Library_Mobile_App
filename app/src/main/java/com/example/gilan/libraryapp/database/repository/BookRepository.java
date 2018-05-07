@@ -41,13 +41,13 @@ public class BookRepository {
 
     public LiveData<List<Book>> searchBooks(String type, String searchValue) {
         switch(type) {
-            case "author_id" : {
+            case "author_name" : {
                 mAllBooks = mBookDao.searchBooksByAuthor("%"+searchValue+"%"); break;
             }
             case "title": {
                 mAllBooks = mBookDao.searchBooksByTitle("%"+searchValue+"%"); break;
             }
-            case "genre_id": {
+            case "genre_name": {
                 mAllBooks = mBookDao.searchBooksByGenre("%"+searchValue+"%"); break;
             }
             case "isbn_number": {
@@ -80,8 +80,10 @@ public class BookRepository {
         new insertAsyncTask(mBookDao).execute(book);
     }
 
-    public LiveData<List<Book>> getBooksByGenre(int genre_id) {
-      return mBookDao.getBooksFromGenre(genre_id);
+    public void update(Book book) { new updateAsyncTask(mBookDao).execute(book); }
+
+    public LiveData<Book> bookById(int id) {
+        return mBookDao.bookById(id);
     }
 
     private static class insertAsyncTask extends AsyncTask<Book, Void, Void> {
@@ -98,4 +100,20 @@ public class BookRepository {
             return null;
         }
     }
+
+    private static class updateAsyncTask extends AsyncTask<Book, Void, Void> {
+
+        private BookDao mAsyncTaskDao;
+
+        updateAsyncTask(BookDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Book... params) {
+            mAsyncTaskDao.update(params[0]);
+            return null;
+        }
+    }
+
 }
