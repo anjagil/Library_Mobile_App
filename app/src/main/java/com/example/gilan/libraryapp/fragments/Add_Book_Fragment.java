@@ -205,6 +205,7 @@ List<String> authors = new ArrayList<String>();
             }
         });
     }
+    // from https://colinyeoh.wordpress.com/2012/05/18/android-convert-image-uri-to-byte-array/
     public byte[] convertImageToByte(Uri uri){
         byte[] data = null;
         try {
